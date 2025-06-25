@@ -50,6 +50,12 @@ pairing_result_*.txt
 output_*.txt
 result_*.txt
 
+# CSV data files
+*.csv
+社員*.csv
+チーム*.csv
+企画書.md
+
 # Logs
 *.log
 
