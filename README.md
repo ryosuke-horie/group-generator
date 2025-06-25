@@ -143,9 +143,21 @@ result = generate_complete_pairing(
 ### コマンドライン実行
 
 ```bash
+# 仮想環境を有効化
 source venv/bin/activate
+
+# スクリプトを実行
 python group_generator.py
+
+# または
+python3 group_generator.py
 ```
+
+### 実行時の注意点
+
+- **必ず仮想環境を有効化**してから実行してください
+- 仮想環境が有効化されていない場合、`ModuleNotFoundError: No module named 'pandas'` エラーが発生します
+- 実行前に必要なCSVファイル（社員_所属リスト.csv、チーム別.csv）を同じディレクトリに配置してください
 
 ## 出力
 
