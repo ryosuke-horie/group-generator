@@ -11,11 +11,23 @@ def load_employee_info(employee_info_csv: str) -> pd.DataFrame:
     try:
         df = pd.read_csv(employee_info_csv, encoding='utf-8')
         # 必須カラムの存在確認
-        required_columns = ['名前', 'グループ']
+        required_columns = ['名前']
         for col in required_columns:
             if col not in df.columns:
                 raise KeyError(f"必須カラム '{col}' が見つかりません")
-        return df[['名前', 'グループ']]
+        
+        # 利用可能なカラムを選択（部署とグループ、どちらかまたは両方）
+        available_columns = ['名前']
+        if '部署' in df.columns:
+            available_columns.append('部署')
+        if 'グループ' in df.columns:
+            available_columns.append('グループ')
+        
+        # 部署もグループもない場合はエラー
+        if len(available_columns) == 1:
+            raise KeyError("部署またはグループのカラムが必要です")
+            
+        return df[available_columns]
     except FileNotFoundError:
         raise FileNotFoundError(f"ファイルが見つかりません: {employee_info_csv}")
 
@@ -71,10 +83,29 @@ def validate_even_number(df: pd.DataFrame) -> None:
 def can_pair(person1: dict, person2: dict) -> bool:
     """
     2人がペアになれるかどうかを判定する
-    条件：グループが異なる かつ チームが異なる
+    柔軟な条件判定:
+    1. 部署・グループどちらかが有効な場合はそれを使用
+    2. 両方有効な場合は両方をチェック
+    3. チームは常にチェック
     """
-    return (person1['グループ'] != person2['グループ'] and 
-            person1['チーム'] != person2['チーム'])
+    # 部署チェック（有効な値がある場合のみ）
+    dept_different = True
+    dept1 = person1.get('部署', '-')
+    dept2 = person2.get('部署', '-')
+    if dept1 != '-' and dept2 != '-' and dept1 and dept2:
+        dept_different = dept1 != dept2
+    
+    # グループチェック（有効な値がある場合のみ）
+    group_different = True
+    group1 = person1.get('グループ', '-')
+    group2 = person2.get('グループ', '-')
+    if group1 != '-' and group2 != '-' and group1 and group2:
+        group_different = group1 != group2
+    
+    # チームチェック（常に実行）
+    team_different = person1['チーム'] != person2['チーム']
+    
+    return dept_different and group_different and team_different
 
 
 def find_pairing_candidates(person: dict, available_people: List[dict]) -> List[dict]:
