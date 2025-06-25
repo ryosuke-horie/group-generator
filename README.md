@@ -144,6 +144,11 @@ result = generate_complete_pairing(
 
 #### 推奨: 1行で実行
 
+**fishの場合**:
+```fish
+source venv/bin/activate.fish && python group_generator.py
+```
+
 **zshの場合 (macOS標準)**:
 ```bash
 bash -c "source venv/bin/activate && python group_generator.py"
@@ -156,6 +161,16 @@ source venv/bin/activate && python group_generator.py
 
 #### 分割実行
 
+**fishの場合**:
+```fish
+# 仮想環境を有効化
+source venv/bin/activate.fish
+
+# スクリプトを実行
+python group_generator.py
+```
+
+**bash/zshの場合**:
 ```bash
 # 仮想環境を有効化
 source venv/bin/activate
@@ -167,7 +182,10 @@ python group_generator.py
 ### 実行時の注意点
 
 - **必ず仮想環境を有効化**してから実行してください
-- **zsh環境**（macOS標準）では`bash -c`を使用してください
+- **シェル別対応**:
+  - **fish**: `activate.fish` を使用
+  - **zsh** (macOS標準): `bash -c` を使用
+  - **bash**: 標準の `activate` を使用
 - 仮想環境が有効化されていない場合、`ModuleNotFoundError: No module named 'pandas'` エラーが発生します
 - 実行前に必要なCSVファイル（社員_所属リスト.csv、チーム別.csv）を同じディレクトリに配置してください
 
