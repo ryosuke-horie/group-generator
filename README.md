@@ -142,15 +142,20 @@ result = generate_complete_pairing(
 
 ### コマンドライン実行
 
+#### 推奨: 1行で実行
+
+```bash
+source venv/bin/activate && python group_generator.py
+```
+
+#### 分割実行
+
 ```bash
 # 仮想環境を有効化
 source venv/bin/activate
 
 # スクリプトを実行
 python group_generator.py
-
-# または
-python3 group_generator.py
 ```
 
 ### 実行時の注意点
